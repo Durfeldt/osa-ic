@@ -15,7 +15,13 @@ import astropy.io.fits as fits
 import pilton
 import numpy as np
 from collections import defaultdict
-import timesystem
+
+try:
+    from timeconversion import TimeConverter as ts
+
+except ImportError:
+    import timesystem
+
 from pathlib import Path
 
 import integral_site_config
@@ -209,12 +215,16 @@ class ICTree:
         vstart=self.find_key(f,"VSTART")
         vstop=self.find_key(f,"VSTOP")
 
-        rev_start=int(timesystem.converttime("IJD",vstart,"REVNUM"))
+        try:
+            rev_start=int(ts(vstart, "IJD", "REVNUM").convert_time())
+            rev_stop=int(ts(vstop, "IJD", "REVNUM").convert_time())
+            
+        except:
+            rev_start=int(timesystem.converttime("IJD",vstart,"REVNUM"))
+            rev_stop=int(timesystem.converttime("IJD",vstop,"REVNUM"))
 
         if first:
             return rev_start
-        
-        rev_stop=int(timesystem.converttime("IJD",vstop,"REVNUM"))
 
         if middle:
             return round(0.5*(rev_start+rev_stop))
