@@ -216,11 +216,12 @@ class ICTree:
         vstop=self.find_key(f,"VSTOP")
 
         try:
+            logging.info('Trying custom module')
             rev_start=int(ts(vstart, "IJD", "REVNUM").convert_time())
             rev_stop=int(ts(vstop, "IJD", "REVNUM").convert_time())
             
         except:
-            print('Failed using custom module')
+            logging.info('Failed using custom module')
             rev_start=int(timesystem.converttime("IJD",vstart,"REVNUM"))
             rev_stop=int(timesystem.converttime("IJD",vstop,"REVNUM"))
 
@@ -268,7 +269,7 @@ class ICTree:
         else:
             hashe=""
 
-        print(icfile)
+        logging.info(icfile)
         f=fits.open(icfile)
         rev=self.get_icfile_validity_rev(f)
 
