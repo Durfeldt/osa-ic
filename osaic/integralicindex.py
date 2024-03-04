@@ -220,6 +220,7 @@ class ICTree:
             rev_stop=int(ts(vstop, "IJD", "REVNUM").convert_time())
             
         except:
+            print('Failed using custom module')
             rev_start=int(timesystem.converttime("IJD",vstart,"REVNUM"))
             rev_stop=int(timesystem.converttime("IJD",vstop,"REVNUM"))
 
@@ -267,6 +268,7 @@ class ICTree:
         else:
             hashe=""
 
+        print(icfile)
         f=fits.open(icfile)
         rev=self.get_icfile_validity_rev(f)
 
